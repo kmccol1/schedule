@@ -28,3 +28,24 @@
   background: #fff;
   cursor: pointer;
 }
+
+.clear-tasks-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.clear-tasks-button:hover {
+  background-color: #ff1a1a;
+}
+
+.controls {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

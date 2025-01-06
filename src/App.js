@@ -6,7 +6,7 @@ const App = () => {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>My Schedule Planner</h1>
+        <h1>My Daily Planner</h1>
       </header>
       <main className="app-main">
         <ScheduleGrid />

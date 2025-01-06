@@ -1,0 +1,39 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the project
+      run: npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4.1.2
+      with:
+        branch: gh-pages  # The branch to deploy to
+        folder: build     # The folder containing the build output (default is `build` for React apps)
+
+    - name: Clean up previous deployments
+      run: |
+        git fetch --unshallow
+        git checkout gh-pages
+        git rm -r . || exit 0
+        git commit -m "Cleanup previous deployments"
+        git push origin gh-pages
