@@ -86,22 +86,60 @@ const ScheduleGrid = () => {
   };
 
 const parseTasksFromJSON = (content) => {
-  try {
+  try
+  {
     const parsedTasks = JSON.parse(content);
-    if (typeof parsedTasks === 'object' && parsedTasks !== null) {
+    if (typeof parsedTasks === 'object' && parsedTasks !== null)
+    {
       const mergedTasks = { ...tasks, ...parsedTasks }; // Merge new tasks with existing tasks
       setTasks(mergedTasks); // Update state
       localStorage.setItem('scheduleTasks', JSON.stringify(mergedTasks)); // Persist to localStorage
-    } else {
+    }
+    else
+    {
       console.error('Invalid JSON format for tasks.');
     }
-  } catch (error) {
+  }
+  catch (error)
+  {
     console.error('Failed to parse JSON:', error);
   }
 };
 
   return (
     <div className="schedule-grid">
+      <div className="schedule-container">
+        {days.map((day) => (
+          <div className="day-column" key={day}>
+            <h3>{day}</h3>
+            {hours.map((hour) => (
+              <div
+                className="hour-slot"
+                key={`${day}-${hour}`}
+                onClick={() => handleSlotClick(day, hour)}
+              >
+                <div className="hour-header">
+                  <strong>{formatHour(hour)}</strong>
+                </div>
+                <div className="task-content">
+                  {tasks[`${day}-${hour}`] ? (
+                    <p className="task-description">{tasks[`${day}-${hour}`]}</p>
+                  ) : (
+                    <p className="no-task">No activity scheduled</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      {selectedSlot && (
+        <TaskInputModal
+          slot={selectedSlot}
+          onClose={() => setSelectedSlot(null)}
+          onSave={addTask}
+        />
+      )}
       <div className="controls">
         <label htmlFor="file-upload">Upload Tasks (JSON): </label>
         <input
@@ -120,30 +158,6 @@ const parseTasksFromJSON = (content) => {
           Clear All Tasks
         </button>
       </div>
-      {days.map((day) => (
-        <div className="day-column" key={day}>
-          <h3>{day}</h3>
-          {hours.map((hour) => (
-            <div
-              className="hour-slot"
-              key={`${day}-${hour}`}
-              onClick={() => handleSlotClick(day, hour)}
-            >
-              <div>
-                <strong>{formatHour(hour)}</strong>
-              </div>
-              <div>{tasks[`${day}-${hour}`]}</div>
-            </div>
-          ))}
-        </div>
-      ))}
-      {selectedSlot && (
-        <TaskInputModal
-          slot={selectedSlot}
-          onClose={() => setSelectedSlot(null)}
-          onSave={addTask}
-        />
-      )}
     </div>
   );
 };
