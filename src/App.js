@@ -1,6 +1,11 @@
+//Date: 11 February 2025
+//Name: Kyle McColgan
+//Filename: App.js
+//Description: Main entry point for the React schedule site.
+
 import React from 'react';
-import ScheduleGrid from './components/ScheduleGrid'; // Adjust the path as needed
-import './App.css'; // Optional: Custom global styling
+import ScheduleGrid from './components/ScheduleGrid';
+import './App.css'; //Custom global styling.
 
 const App = () => {
   return (

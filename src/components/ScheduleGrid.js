@@ -1,3 +1,8 @@
+//Date: 14 February 2025
+//Name: Kyle McColgan
+//Filename: ScheduleGrid.js
+//Description: Contains the React parent component for the weekly schedule project.
+
 import React, { useState, useEffect } from 'react';
 import TaskInputModal from './TaskInputModal';
 import './ScheduleGrid.css';
@@ -107,7 +112,7 @@ const parseTasksFromJSON = (content) => {
 };
 
   return (
-    <div className="schedule-grid">
+    <div className="schedule-grid" data-testid="schedule-grid">
       <div className="schedule-container">
         {days.map((day) => (
           <div className="day-column" key={day}>
