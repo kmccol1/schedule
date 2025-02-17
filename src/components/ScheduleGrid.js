@@ -1,14 +1,14 @@
-//Date: 14 February 2025
+//Date: 17 February 2025
 //Name: Kyle McColgan
 //Filename: ScheduleGrid.js
-//Description: Contains the React parent component for the weekly schedule project.
+//Description: Contains the React parent grid component for the weekly schedule project.
 
 import React, { useState, useEffect } from 'react';
 import TaskInputModal from './TaskInputModal';
 import './ScheduleGrid.css';
 
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-const hours = Array.from({ length: 15 }, (_, index) => 8 + index); // 8 AM to 10 PM
+const hours = Array.from({ length: 15 }, (_, index) => 8 + index); // 8 AM to 10 PM.
 
 const ScheduleGrid = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -27,33 +27,39 @@ const ScheduleGrid = () => {
   });
 
 
-  // Load tasks from localStorage when component mounts
+  // Load tasks from localStorage when component mounts.
   useEffect(() => {
-    try
-    {
-      const savedTasks = localStorage.getItem('scheduleTasks');
-      if (savedTasks)
-      {
-        const parsedTasks = JSON.parse(savedTasks);
-        if (typeof parsedTasks === 'object' && parsedTasks !== null)
+    const loadTasks = async () => {
+      try {
+        const response = await fetch(`${process.env.PUBLIC_URL}/data/schedule.json`);
+        if (response.ok)
         {
-          setTasks(parsedTasks); // Load tasks into state
-          console.log('Loaded tasks from localStorage:', parsedTasks);
+          const data = await response.json();
+          setTasks(data); // Set the tasks in state
+          console.log("Loaded tasks from schedule.json:", data);
         }
         else
         {
-          console.warn('Invalid task data in localStorage. Resetting tasks.');
-          localStorage.removeItem('scheduleTasks'); // Clear invalid data
+          console.error('Failed to fetch schedule.json');
         }
       }
-    }
-    catch (error)
-    {
-      console.error('Error loading tasks from localStorage:', error);
-    }
+      catch (error)
+      {
+        console.error("Error loading tasks:", error);
+      }
+    };
+
+    loadTasks();
   }, []);
 
-  // Save tasks to localStorage whenever they change
+
+  useEffect(() => {
+    console.log('Updated tasks state:', tasks);  // Check the updated tasks.
+  }, [tasks]);
+
+
+
+  // Save tasks to localStorage on update.
   useEffect(() => {
     console.log('Saving tasks to localStorage:', tasks);
     localStorage.setItem('scheduleTasks', JSON.stringify(tasks));
@@ -96,9 +102,9 @@ const parseTasksFromJSON = (content) => {
     const parsedTasks = JSON.parse(content);
     if (typeof parsedTasks === 'object' && parsedTasks !== null)
     {
-      const mergedTasks = { ...tasks, ...parsedTasks }; // Merge new tasks with existing tasks
-      setTasks(mergedTasks); // Update state
-      localStorage.setItem('scheduleTasks', JSON.stringify(mergedTasks)); // Persist to localStorage
+      const mergedTasks = { ...tasks, ...parsedTasks }; // Merge new tasks with existing tasks.
+      setTasks(mergedTasks); // Update state.
+      localStorage.setItem('scheduleTasks', JSON.stringify(mergedTasks)); // Persist to localStorage.
     }
     else
     {
@@ -127,7 +133,7 @@ const parseTasksFromJSON = (content) => {
                   <strong>{formatHour(hour)}</strong>
                 </div>
                 <div className="task-content">
-                  {tasks[`${day}-${hour}`] ? (
+                  {tasks && tasks[`${day}-${hour}`] ? (
                     <p className="task-description">{tasks[`${day}-${hour}`]}</p>
                   ) : (
                     <p className="no-task">No activity scheduled</p>
