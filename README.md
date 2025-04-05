@@ -1,6 +1,6 @@
 # Schedule
 
-This project provides a web-based schedule manager, where users can view, add, and manage tasks in a weekly schedule grid. The tasks can be uploaded from a JSON file and persist even after a page reload using browser's `localStorage`.
+This project provides a web-based schedule system, where users can view, add, and manage tasks in a weekly schedule grid. The tasks can be uploaded from a JSON file and persist even after a page reload using browser's `localStorage`.
 
 ## Features
 
